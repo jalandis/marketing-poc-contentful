@@ -48,5 +48,12 @@ module.exports = {
       resolve: "gatsby-source-contentful",
       options: contentfulConfig,
     },
+    {
+      resolve: 'gatsby-source-pg',
+      options: {
+        connectionString: process.env.DATABASE_URL,
+        schema: 'public',
+      },
+    },
   ],
 };
