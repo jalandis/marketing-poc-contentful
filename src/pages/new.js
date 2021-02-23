@@ -4,11 +4,12 @@ import get from 'lodash/get'
 import { Helmet } from 'react-helmet'
 import styles from './blog.module.css'
 import Layout from '../components/layout'
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 
-class TestIndex extends React.Component {
+class NewIndex extends React.Component {
   render() {
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    const users = get(this, 'props.data.postgres.allImpactUsers.edges')
+    const tests = get(this, 'props.data.allContentfulTest.edges')
 
     return (
       <Layout location={this.props.location}>
@@ -16,12 +17,13 @@ class TestIndex extends React.Component {
           <Helmet title={siteTitle} />
           <div className={styles.hero}>Test</div>
           <div className="wrapper">
-            <h2 className="section-headline">Postgres Users</h2>
+            <h2 className="section-headline">Test Content</h2>
             <ul className="article-list">
-              {users.map(({ node }) => {
+              {tests.map(({node}) => {
                 return (
-                  <li key={node.id}>
-                    {node.email}
+                  <li>
+                    <div>{node.title}</div>
+                    <div>{documentToReactComponents(node.rich.json)}</div>
                   </li>
                 )
               })}
@@ -33,19 +35,19 @@ class TestIndex extends React.Component {
   }
 }
 
-export default TestIndex
+export default NewIndex
 
 export const pageQuery = graphql`
-    query ImpactUsersQuery {
-        postgres {
-            allImpactUsers (first: 4, orderBy: NATURAL) {
-                edges {
-                    node {
-                        id
-                        email
-                    }
-                }
-            }
+  query TestQuery {
+    allContentfulTest {
+      edges {
+        node {
+          rich {
+            json
+          }
+          title
         }
+      }
     }
+  }
 `

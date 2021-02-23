@@ -14,6 +14,9 @@ export default () => (
       <li className={styles.navigationItem}>
         <Link to="/test/">Postgres Users</Link>
       </li>
+      <li className={styles.navigationItem}>
+        <Link to="/new/">New Content</Link>
+      </li>
     </ul>
   </nav>
 )
